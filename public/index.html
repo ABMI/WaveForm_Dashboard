@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dash Board</title>
+
+
+    <!-- Bootstrap -->
+    <link href="./lib/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="./lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="./lib/css/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="./lib/css/custom.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bar_chart.css">
+
+    <link rel="stylesheet" href="assets/css/tip_custom.css">
+    <!--D3.js-->
+    <script src="lib/d3/d3.min.js"></script>
+
+</head>
+
+<!--<body class="nav-md">-->
+<body class="nav-sm">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <br/>
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <ul class="nav side-menu">
+                            <li id="nav_total"><a><i class="fa fa-tachometer"></i> Total </a></li>
+                            <li><a id="nav_summary"><i class="fa fa-tachometer"></i> Summary </a></li>
+                            <li><a id="nav_ticu_a"><i class="fa fa-tachometer"></i> TICU A </a></li>
+                            <li><a id="nav_ticu_b"><i class="fa fa-tachometer"></i> TICU B </a></li>
+                            <li><a id="nav_ticu_c"><i class="fa fa-tachometer"></i> TICU C </a></li>
+                            <li><a id="nav_eicu"><i class="fa fa-tachometer"></i> EICU </a></li>
+                            <li><a id="nav_micu"><i class="fa fa-tachometer"></i> MICU </a></li>
+                            <li><a id="nav_tor"><i class="fa fa-tachometer"></i> TOR </a></li>
+                            <li><a id="nav_3icua"><i class="fa fa-tachometer"></i> 3ICU A </a></li>
+                            <li><a id="nav_3icub"><i class="fa fa-tachometer"></i> 3ICU B </a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h1>Dash Board</h1>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- top tiles -->
+                <div class="row tile_count">
+                    <!--<div class="row">-->
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Patients</span>
+                        <div class="count" id="total_patients"></div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-clock-o"></i> Days</span>
+                        <div class="count" id="monitoring_days"></div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-database"></i> Total Rows</span>
+                        <div class="count" id="total_rows"></div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-line-chart"></i> Total Wave</span>
+                        <div class="count" id="total_wave"></div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-clock-o"></i> Patient Year</span>
+                        <div class="count" id="patient_year"></div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-user"></i> Storage <i id="storage_total"></i><i
+                    id="storage_used"></i></span>
+                        <div class="count" id="storage_percent"></div>
+                    </div>
+                </div>
+                <!--/top tiles-->
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Transaction Summary </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="demo-container">
+                                    <svg id="wave_line" class="graph-md-6 graph-xs-12 graph-xxs-12 graph-xxxs-12"></svg>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Storage Usage </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="demo-container">
+                                    <svg id="storage_usage"
+                                         class="graph-md-6 graph-xs-12 graph-xxs-12 graph-xxxs-12"></svg>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="row row_summary">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate" class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copy and paste when new ICU added -->
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_ticua">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: TICU-A </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_TICUA"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: TICU-A </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_TICUA"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: TICU-A</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_TICUA"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_ticub">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: TICU-B </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_TICUB"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: TICU-B </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_TICUB"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: TICU-B</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_TICUB"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_ticuc">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: TICU-C </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_TICUC"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: TICU-C
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_TICUC"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: TICU-C </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_TICUC"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_eicu">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: EICU </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_EICU"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: EICU </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_EICU"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: EICU</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_EICU"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_micu">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: MICU </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_MICU"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: MICU </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_MICU"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: MICU</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_MICU"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_tor">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: TOR </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_TOR"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: TOR </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_TOR"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: TOR</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_TOR"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_3icua">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: 3 ICU A </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_3icua"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: 3 ICU A </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_3icua"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: 3 ICU A</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_3icua"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="clearfix"></div>
+
+                <div class="delimiter">
+                    <hr>
+                    <br>
+                </div>
+
+                <div class="row row-section row_3icub">
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Monthly Patients: 3 ICU B </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_month_3icub"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Last Month Patients: 3 ICU B </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="patient_day_3icub"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Wave Type: 3 ICU B</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <svg id="wave_rate_3icub"
+                                     class="graph-md-4 graph3-xs-12 graph3-xxs-12 graph3-xxxs-12"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="clearfix"></div>
+
+                <br/>
+            </div>
+        </div>
+        <!-- /page content -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="./lib/js/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="./lib/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="./lib/js/fastclick.js"></script>
+<!-- NProgress -->
+<script src="./lib/js/nprogress.js"></script>
+<!-- Chart.js -->
+<script src="./lib/js/Chart.min.js"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="./lib/js/custom.min.js"></script>
+
+<!--tool-tip library-->
+<script src="lib/js/d3-tip.js"></script>
+
+<script type="text/javascript" src="assets/js/colorbrewer.js"></script>
+<script type="text/javascript" src="assets/js/config.js"></script>
+<script type="text/javascript" src="assets/js/statistic.js"></script>
+<script type="text/javascript" src="assets/js/patient_month.js"></script>
+<script type="text/javascript" src="assets/js/patient_day.js"></script>
+<script type="text/javascript" src="assets/js/wave_rate.js"></script>
+<script type="text/javascript" src="assets/js/wave_line.js"></script>
+<script type="text/javascript" src="assets/js/storage_usage.js"></script>
+<script type="text/javascript" src="assets/js/navControler.js"></script>
+
+</body>
+</html>

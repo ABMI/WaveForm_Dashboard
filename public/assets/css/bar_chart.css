@@ -1,0 +1,101 @@
+html, body {
+    height: 100%;
+}
+
+.bar {
+    fill: #3FB9FE;
+}
+
+.bar:hover {
+    fill: #03586A;
+}
+
+.axis--x path {
+    display: none;
+}
+
+.axis {
+    stroke: #E7E7E7;
+}
+
+.axis path{
+    stroke: #E7E7E7;
+}
+
+.legend text {
+    fill: #E7E7E7;
+}
+.legendB text {
+    fill: #E7E7E7;
+}
+.legendC text {
+    fill: #E7E7E7;
+}
+
+
+/*.line {*/
+    /*fill: none;*/
+    /*stroke: #000;*/
+/*}*/
+
+path.slice{
+    stroke-width:2px;
+}
+
+polyline{
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
+}
+
+
+hr.delimiter {
+    border-top: 1px solid #8c8b8b;
+    border-bottom: 1px solid #fff;
+}
+
+hr.delimiter:after {
+    content: '';
+    display: block;
+    margin-top: 2px;
+    border-top: 1px solid #8c8b8b;
+    border-bottom: 1px solid #fff;
+}
+
+@media (min-width: 992px) {
+    svg.graph-md-6 {
+        height: 14vw;
+    }
+
+    svg.graph-md-4 {
+        height: 12vw;
+    }
+}
+
+@media (max-width: 767px) {
+    svg.graph-xs-12 {
+        height: 27vw;
+    }
+    svg.graph3-xs-12 {
+        height: 38vw;
+    }
+}
+
+@media (max-width: 557px) {
+    svg.graph-xxs-12 {
+        height: 25vw;
+    }
+    svg.graph3-xxs-12 {
+        height: 36vw;
+    }
+}
+
+@media (max-width: 457px) {
+    svg.graph-xxxs-12 {
+        height: 22vw;
+    }
+    svg.graph3-xxxs-12 {
+        height: 31vw;
+    }
+}
