@@ -29,11 +29,11 @@ function showStorageUsage() {
                 .attr("y", function () {
                     return y(d.data.drive)
                 })
-                .attr("transform", "translate(200, 27)")
+                .attr("transform", "translate(50, 10)")
                 .attr("dy", ".35em")
-                .style("font-size", "33px")
-                .style("fill", "#C6C6C6")   // 회색
-                .style("font-weight", "600")
+                .style("font-size", "40px")
+                .style("fill", "#FFFFFF")   // 회색
+                .style("font-weight", "200")
                 .text(function () {
                     return "Total: " + bytesToSize(d.data.total) +
                         ", Used: " + bytesToSize(d.data.used) +
